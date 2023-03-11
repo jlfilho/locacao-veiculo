@@ -31,6 +31,11 @@ public class Categoria implements Serializable {
 	public Categoria() {
 
 	}
+	
+	public Categoria(Integer id) {
+		super();
+		this.id = id;
+	}
 
 	public Categoria(Integer id, String descreicao, Double precoDiaria) {
 		super();

@@ -4,28 +4,51 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Locacao implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Instant dataRetirada;
 	private Instant dataDevolucao;
 	
-	private Sede sedeRetirada;
+	//private Sede sedeRetirada;
+	
+	@JsonIgnoreProperties(value = { "locacoes" })
+	@ManyToOne
+	@JoinColumn(name="carro_id")
 	private Carro carro;
+	
+	@JsonIgnoreProperties(value = { "locacoes" })
+	@ManyToOne
+	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
 	
 	public Locacao () {
 		
 	}
 
-	public Locacao(Integer id, Instant dataRetirada, Instant dataDevolucao, Sede sedeRetirada, Carro carro,
+	public Locacao(Integer id, Instant dataRetirada, Instant dataDevolucao, Carro carro,
 			Cliente cliente) {
 		super();
 		this.id = id;
 		this.dataRetirada = dataRetirada;
 		this.dataDevolucao = dataDevolucao;
-		this.sedeRetirada = sedeRetirada;
+		//this.sedeRetirada = sedeRetirada;
 		this.carro = carro;
 		this.cliente = cliente;
 	}
@@ -54,13 +77,12 @@ public class Locacao implements Serializable{
 		this.dataDevolucao = dataDevolucao;
 	}
 
-	public Sede getSedeRetirada() {
-		return sedeRetirada;
-	}
-
-	public void setSedeRetirada(Sede sedeRetirada) {
-		this.sedeRetirada = sedeRetirada;
-	}
+	/*
+	 * public Sede getSedeRetirada() { return sedeRetirada; }
+	 * 
+	 * public void setSedeRetirada(Sede sedeRetirada) { this.sedeRetirada =
+	 * sedeRetirada; }
+	 */
 
 	public Carro getCarro() {
 		return carro;

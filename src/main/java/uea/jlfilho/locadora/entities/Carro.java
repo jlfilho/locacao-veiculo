@@ -2,7 +2,9 @@ package uea.jlfilho.locadora.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,36 +16,43 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import uea.jlfilho.locadora.entities.enums.Cor;
 
 @Entity
 //@Table(name="tb_carro")
-public class Carro implements Serializable{
+public class Carro implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String modelo;
 	private String placa;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Cor cor;
 	private Integer ano;
 	private LocalDate dataAquisicao;
-	
+
 	@JsonIgnoreProperties(value = { "carros" })
 	@ManyToOne
-	@JoinColumn(name="categoria_id")
+	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
-	
-	//private Sede sede;
-	
-	
-	//private Set<Locacao> locacoes = new HashSet<Locacao>();
-	
-	public Carro () {
-		
+
+	// private Sede sede;
+
+	@JsonIgnoreProperties(value = { "carro" })
+	@OneToMany(mappedBy = "carro")
+	private Set<Locacao> locacoes = new HashSet<Locacao>();
+
+	public Carro() {
+
+	}
+
+	public Carro(Integer id) {
+		super();
+		this.id = id;
 	}
 
 	public Carro(Integer id, String modelo, String placa, Cor cor, Integer ano, LocalDate dataAquisicao,
@@ -56,7 +65,7 @@ public class Carro implements Serializable{
 		this.ano = ano;
 		this.dataAquisicao = dataAquisicao;
 		this.categoria = categoria;
-		//this.sede = sede;
+		// this.sede = sede;
 	}
 
 	public Integer getId() {
@@ -121,9 +130,9 @@ public class Carro implements Serializable{
 	 * public void setSede(Sede sede) { this.sede = sede; }
 	 */
 
-	/*
-	 * public Set<Locacao> getLocacoes() { return locacoes; }
-	 */
+	public Set<Locacao> getLocacoes() {
+		return locacoes;
+	}
 
 	@Override
 	public int hashCode() {
@@ -141,5 +150,5 @@ public class Carro implements Serializable{
 		Carro other = (Carro) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

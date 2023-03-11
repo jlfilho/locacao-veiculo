@@ -5,17 +5,20 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -24,13 +27,20 @@ public class Cliente implements Serializable {
 	private String email;
 
 	@ElementCollection
-	@CollectionTable(name="TELEFONE")
+	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
-	// private Set<Locacao> locacoes = new HashSet<Locacao>();
+	@JsonIgnoreProperties(value = { "cliente" })
+	@OneToMany(mappedBy = "cliente")
+	private Set<Locacao> locacoes = new HashSet<Locacao>();
 
 	public Cliente() {
 
+	}
+	
+	public Cliente(Integer id) {
+		super();
+		this.id = id;
 	}
 
 	public Cliente(Integer id, String nome, String cpf, String email) {
@@ -94,8 +104,8 @@ public class Cliente implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	/*
-	 * public Set<Locacao> getLocacoes() { return locacoes; }
-	 */
+	public Set<Locacao> getLocacoes() {
+		return locacoes;
+	}
 
 }

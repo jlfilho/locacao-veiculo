@@ -2,6 +2,9 @@ package uea.jlfilho.locadora.entities;
 
 import java.time.Instant;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class LocacaoDiaria extends Locacao {
 	private Integer diasPrevistoDevolucao;
 	
@@ -9,9 +12,9 @@ public class LocacaoDiaria extends Locacao {
 		super();
 	}
 
-	public LocacaoDiaria(Integer id, Instant dataRetirada, Instant dataDevolucao, Sede sedeRetirada, Carro carro,
+	public LocacaoDiaria(Integer id, Instant dataRetirada, Instant dataDevolucao, Carro carro,
 			Cliente cliente, Integer diasPrevistoDevolucao) {
-		super(id, dataRetirada, dataDevolucao, sedeRetirada, carro, cliente);
+		super(id, dataRetirada, dataDevolucao, carro, cliente);
 		this.diasPrevistoDevolucao = diasPrevistoDevolucao;
 	}
 
